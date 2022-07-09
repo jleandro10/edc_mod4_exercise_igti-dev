@@ -1,7 +1,7 @@
 apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
-  name: enade2017-converte-parquet-{{ macros.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") }}
+  name: enade2017-converte-parquet
   namespace: airflow
 spec:
   volumes:
