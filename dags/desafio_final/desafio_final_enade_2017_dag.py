@@ -17,15 +17,18 @@ from airflow.utils.dates import days_ago
 
 
 def trigger_crawler_enade2017_func():
-    glue.start_crawler(Name='enade2017_crawler')
+    #glue.start_crawler(Name='enade2017_crawler')
+    glue.start_crawler(Name='crawler-enade2017')
 
 
 with DAG(
     'desafio_final_enade_2017',
     default_args={
-        'owner': 'Neylson',
+        #'Neylson'
+        'owner': 'Leandro' ,
         'depends_on_past': False,
-        'email': ['neylson.crepalde@a3data.com.br'],
+        #['neylson.crepalde@a3data.com.br']
+        'email': ['email@email.com.br'] ,
         'email_on_failure': False,
         'email_on_retry': False,
         'max_active_runs': 1,
@@ -34,9 +37,9 @@ with DAG(
     schedule_interval="0 * * * *",
     start_date=days_ago(1),
     catchup=False,
-    tags=['spark', 'kubernetes', 'batch', 'enem'],
+    tags=['spark', 'kubernetes', 'batch', 'enade'],
 ) as dag:
-
+    '''
     extracao = KubernetesPodOperator(
         namespace='airflow',
         image="539445819060.dkr.ecr.us-east-1.amazonaws.com/extraction-enade-2017:v1",
@@ -48,6 +51,7 @@ with DAG(
         in_cluster=True,
         get_logs=True,
     )
+    '''
 
 
     converte_parquet = SparkKubernetesOperator(
@@ -71,4 +75,5 @@ with DAG(
     )
 
 
-extracao >> converte_parquet >> converte_parquet_monitor >> trigger_crawler_enade2017
+#extracao >> converte_parquet >> converte_parquet_monitor >> trigger_crawler_enade2017
+converte_parquet >> converte_parquet_monitor >> trigger_crawler_enade2017
