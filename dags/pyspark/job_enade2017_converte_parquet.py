@@ -24,7 +24,7 @@ if __name__ == "__main__":
             .getOrCreate()
 
     spark.sparkContext.setLogLevel("WARN")
-
+    '''
     df = (
         spark
         .read
@@ -32,7 +32,15 @@ if __name__ == "__main__":
         .options(header='true', inferSchema='true', delimiter=';')
         .load("s3a://dl-landing-zone-539445819060/enade2017/")
     )
-    
+    '''
+    df = (
+        spark
+        .read
+        .format("csv")
+        .options(header='true', inferSchema='true', delimiter=';')
+        .load("s3a://dl-landing-zone-desafio/enade2017/")
+    )
+
     print("*********************")
     print("Corrige NT_GER......")
     print("*********************")
@@ -46,11 +54,19 @@ if __name__ == "__main__":
     
     df.printSchema()
 
+    '''
     (df
     .write
     .mode("overwrite")
     .format("parquet")
     .save("s3a://dl-processing-zone-539445819060/enade2017/")
+    )
+    '''
+    (df
+    .write
+    .mode("overwrite")
+    .format("parquet")
+    .save("s3a://dl-processing-zone-desafio/enade2017/")
     )
 
     print("*********************")
